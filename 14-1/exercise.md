@@ -28,8 +28,9 @@
 
 
 1. Using curl, make a GET request to the icanhazdadjoke.com API to find all jokes involving the word “pirate”
-        `curl -H "Accept: application/json" "https://icanhazdadjoke.com/search?term=pirate"`
+   1.        `curl -H "Accept: application/json" "https://icanhazdadjoke.com/search?term=pirate"`
 2. Use dig to find what the IP address is for icanhazdadjoke.com
+    1.    
         `icanhazdadjoke.com.     0       IN      A       172.67.211.64`
         `icanhazdadjoke.com.     0       IN      A       104.21.37.176`
 3. Make a simple web page and serve it using python3 -m http.server. Visit the page in a browser.
