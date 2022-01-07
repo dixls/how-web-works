@@ -5,27 +5,30 @@ const giphyAPIKey = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym"
 
 class gifSearch {
     constructor (q, api_key) {
-        q,
-        api_key
+            this.q = q,
+            this.api_key = api_key
     }
-    async findGif(searchParams) {
-        const gifSearch = await axios.get("https://api.giphy.com/v1/gifs/search", {params : searchParams})
+    async findGif() {
+        const gifSearch = await axios.get("https://api.giphy.com/v1/gifs/search", {params : this})
         const gifNumber = Math.floor(Math.random()*50)
         let result = gifSearch.data.data
         // console.log(result);
         return result
     }
-    async getRandomGif (searchTerm) {
-        const result = await findGif(this.newSearch(searchTerm, giphyAPIKey));
-        gifNumber = Math.floor(Math.random()*50)
-        // return result[gifNumber].embed_url
-        console.log(result[gifNumber].embed_url)
+    async getRandomGif () {
+        const result = await this.findGif();
+        const gifNumber = Math.floor(Math.random()*50)
+        // console.log(result[gifNumber])
+        return result[gifNumber].images.original.url
     }
-    addNewGif (searchResults) {
+    async addNewGif () {
         const gifArea = document.getElementById("gifArea");
         const newGif = document.createElement("div");
-        newGif.classList.add("column card")
-        newGif.innerHTML = `<img class="image" src="searchResults"`
+        const gifURL = await this.getRandomGif();
+        newGif.classList.add("column", "is-3", "card")
+        newGif.innerHTML = `<img class="image" src="${gifURL}">`
+        gifArea.append(newGif)
+        console.log(newGif)
     }
 }
 
@@ -36,7 +39,7 @@ class gifSearch {
 //     }
 // }
 
-new gifSearch ("banana", giphyAPIKey)
+const bananaGif = new gifSearch("banana", giphyAPIKey)
 
 
 
