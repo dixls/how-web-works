@@ -1,5 +1,7 @@
 const searchForm = document.getElementById("search");
 const searchBar = document.getElementById("searchBar");
+const delButton = document.getElementById("delAll");
+const gifArea = document.getElementById("gifArea");
 const giphyAPIKey = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym"
 
 class gifSearch {
@@ -27,19 +29,21 @@ class gifSearch {
         searchArea.append(errorPop)
     }
     async getRandomGif() {
+        const errorPop = document.getElementById('errorPop')
         const result = await this.findGif();
         const totalResults = result.length
         const gifNumber = Math.floor(Math.random() * totalResults)
         // console.log(result[gifNumber])
         if (totalResults > 0) {
-            document.getElementById('errorPop').remove()
+            if(errorPop){
+                errorPop.remove()
+            }
             return result[gifNumber].images.original.url
         } else {
             throw this.errorMsg("no results were found");
         }
     }
     async addNewGif() {
-        const gifArea = document.getElementById("gifArea");
         const newGifCardImage = document.createElement("div");
         const newGifCard = document.createElement("div");
         const newGif = document.createElement("div");
@@ -55,15 +59,25 @@ class gifSearch {
     }
 }
 
-searchForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
+async function newSearch () {
     const searchTerm = searchBar.value;
-    const newSearch = new gifSearch(searchTerm, giphyAPIKey)
-    console.log("searching for ", searchTerm)
-    await newSearch.addNewGif()
-    searchTerm = ''
+        const newSearch = new gifSearch(searchTerm, giphyAPIKey)
+        console.log("searching for ", searchTerm)
+        searchBar.value = ''
+        await newSearch.addNewGif()
+}
+
+delButton.addEventListener("click", function(event){
+    event.preventDefault();
+    while (gifArea.firstChild){
+            gifArea.removeChild(gifArea.firstChild);
+        }
 })
 
+searchForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    newSearch();
+})
 
 // const bananaGif = new gifSearch("banana", giphyAPIKey)
 
