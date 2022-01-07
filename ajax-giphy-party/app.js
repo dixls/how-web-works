@@ -1,6 +1,5 @@
-console.log("Let's get this party started!");
-
 const searchForm = document.getElementById("search");
+const searchBar = document.getElementById("searchBar");
 const giphyAPIKey = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym"
 
 class gifSearch {
@@ -37,6 +36,15 @@ class gifSearch {
         console.log(newGif)
     }
 }
+
+searchForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const searchTerm = searchBar.value;
+    const newSearch = new gifSearch(searchTerm, giphyAPIKey)
+    console.log("searching for ", searchTerm)
+    await newSearch.addNewGif()
+    searchTerm = ''
+})
 
 // const newSearch = (q, api_key) => {
 //     return params = {
