@@ -23,10 +23,13 @@ class gifSearch {
     }
     async addNewGif () {
         const gifArea = document.getElementById("gifArea");
+        const newGifCard = document.createElement("div");
         const newGif = document.createElement("div");
         const gifURL = await this.getRandomGif();
-        newGif.classList.add("column", "is-3", "card")
-        newGif.innerHTML = `<img class="image" src="${gifURL}">`
+        newGif.classList.add("column", "is-3",)
+        newGifCard.classList.add("card")
+        newGifCard.innerHTML = `<img class="image" src="${gifURL}">`
+        newGif.append(newGifCard)
         gifArea.append(newGif)
         console.log(newGif)
     }
