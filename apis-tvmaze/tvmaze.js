@@ -23,7 +23,7 @@ async function searchShows(query) {
   const newSearch = await axios.get("http://api.tvmaze.com/search/shows", {params: {q: query}})
   console.log(newSearch);
   if(newSearch.data.length > 0){
-    return newSearch.data[0].show;
+    return newSearch.data.map( show => show.show)
   } else {
     throw new Error("not found")
   }
@@ -50,8 +50,8 @@ function populateShows(shows) {
   for (let show of shows) {
     let $item = $(
       `<div class="col-md-6 col-lg-3 Show" data-show-id="${show.id}">
-         <div class="card" data-show-id="${show.id}">
-           <img src=${show.image} class="card-img-top" alt="${show.name}">
+         <div class="card m-1" data-show-id="${show.id}">
+           
            <div class="card-body">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
