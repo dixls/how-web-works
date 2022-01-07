@@ -19,6 +19,7 @@
  */
 async function searchShows(query) {
   const newSearch = await axios.get("http://api.tvmaze.com/search/shows", {params: {q: query}})
+  console.log(newSearch)
   if(newSearch.data.length > 0){
     return newSearch.data.map( show => show.show)
   } else {
@@ -77,6 +78,7 @@ $("#search-form").on("submit", async function handleSearch (evt) {
   populateShows(shows);
 });
 
+// event handler for episode button click
 $("#shows-list").on("click", ".epBtn", async function (event) {
   event.preventDefault()
   console.log(getEpisodes(this.id))
@@ -88,12 +90,15 @@ $("#shows-list").on("click", ".epBtn", async function (event) {
  */
 
 async function getEpisodes(id) {
-  // TODO: get episodes from tvmaze
-  //       you can get this by making GET request to
-  //       http://api.tvmaze.com/shows/SHOW-ID-HERE/episodes
-
   const epList = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`)
-  console.log(epList)
-  return epList
+  const cleanEpList = epList.data.map( ep => ({
+    id: ep.id,
+    name: ep.name,
+    season: ep.season,
+    number: ep.number
+  }))
+  console.log(cleanEpList)
+  return cleanEpList
+
   // TODO: return array-of-episode-info, as described in docstring above
 }
