@@ -3,24 +3,42 @@ const searchBar = document.getElementById("searchBar");
 const giphyAPIKey = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym"
 
 class gifSearch {
-    constructor (q, api_key) {
-            this.q = q,
+    constructor(q, api_key) {
+        this.q = q,
             this.api_key = api_key
     }
     async findGif() {
-        const gifSearch = await axios.get("https://api.giphy.com/v1/gifs/search", {params : this})
-        const gifNumber = Math.floor(Math.random()*50)
+        const gifSearch = await axios.get("https://api.giphy.com/v1/gifs/search", { params: this })
+
+        console.log(gifSearch);
         let result = gifSearch.data.data
         // console.log(result);
         return result
     }
-    async getRandomGif () {
-        const result = await this.findGif();
-        const gifNumber = Math.floor(Math.random()*50)
-        // console.log(result[gifNumber])
-        return result[gifNumber].images.original.url
+    errorMsg(message) {
+        const searchArea = document.getElementById('searchArea')
+        const errorPop = document.createElement('article');
+        const p = document.createElement('div');
+        errorPop.classList.add('message', 'is-danger')
+        errorPop.setAttribute('id', 'errorPop')
+        p.classList.add('message-body', 'py-1')
+        p.innerText = message
+        errorPop.append(p)
+        searchArea.append(errorPop)
     }
-    async addNewGif () {
+    async getRandomGif() {
+        const result = await this.findGif();
+        const totalResults = result.length
+        const gifNumber = Math.floor(Math.random() * totalResults)
+        // console.log(result[gifNumber])
+        if (totalResults > 0) {
+            document.getElementById('errorPop').remove()
+            return result[gifNumber].images.original.url
+        } else {
+            throw this.errorMsg("no results were found");
+        }
+    }
+    async addNewGif() {
         const gifArea = document.getElementById("gifArea");
         const newGifCardImage = document.createElement("div");
         const newGifCard = document.createElement("div");
@@ -37,7 +55,7 @@ class gifSearch {
     }
 }
 
-searchForm.addEventListener("submit", async function(event) {
+searchForm.addEventListener("submit", async function (event) {
     event.preventDefault();
     const searchTerm = searchBar.value;
     const newSearch = new gifSearch(searchTerm, giphyAPIKey)
@@ -46,14 +64,8 @@ searchForm.addEventListener("submit", async function(event) {
     searchTerm = ''
 })
 
-// const newSearch = (q, api_key) => {
-//     return params = {
-//         q,
-//         api_key
-//     }
-// }
 
-const bananaGif = new gifSearch("banana", giphyAPIKey)
+// const bananaGif = new gifSearch("banana", giphyAPIKey)
 
 
 
