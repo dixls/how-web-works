@@ -50,7 +50,7 @@ function populateShows(shows) {
             <div class="card-body">
               <h5 class="card-title">${show.name}</h5>
               <p class="card-text">${show.summary}</p>
-              <button class="btn btn-primary epBtn" type="button" id="${show.id}">Episodes</button>
+              <button class="btn btn-primary epBtn" type="button">Episodes</button>
             </div>
           </div>
         </div>
@@ -81,7 +81,10 @@ $("#search-form").on("submit", async function handleSearch (evt) {
 // event handler for episode button click
 $("#shows-list").on("click", ".epBtn", async function (event) {
   event.preventDefault()
-  console.log(getEpisodes(this.id))
+  // console.log(this.closest('.Show').dataset.showId)
+  let epList = await getEpisodes(this.closest('.Show').dataset.showId);
+  populateEpisodes(epList);
+
 })
 
 
@@ -97,8 +100,18 @@ async function getEpisodes(id) {
     season: ep.season,
     number: ep.number
   }))
-  console.log(cleanEpList)
   return cleanEpList
+}
 
-  // TODO: return array-of-episode-info, as described in docstring above
+//populateEpisodes should make a list entry in a ul for each episode in a series
+function populateEpisodes(epList) {
+  const $episodesList = $("#episodes-list");
+  $episodesList.empty();
+  $("#episodes-area").css("display", "block")
+  for (let ep of epList) { 
+    
+    let $item = $(
+      `<li>${ep.name} (season ${ep.season}, number ${ep.number})</li>`);
+    $episodesList.append($item);
+  }
 }
