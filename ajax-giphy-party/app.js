@@ -1,6 +1,6 @@
 console.log("Let's get this party started!");
 
-const searchForm = document.getElementById("id");
+const searchForm = document.getElementById("search");
 const giphyAPIKey = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym"
 
 class gifSearch {
@@ -23,12 +23,15 @@ class gifSearch {
     }
     async addNewGif () {
         const gifArea = document.getElementById("gifArea");
+        const newGifCardImage = document.createElement("div");
         const newGifCard = document.createElement("div");
         const newGif = document.createElement("div");
         const gifURL = await this.getRandomGif();
         newGif.classList.add("column", "is-3",)
         newGifCard.classList.add("card")
-        newGifCard.innerHTML = `<img class="image" src="${gifURL}">`
+        newGifCardImage.classList.add("card-image")
+        newGifCardImage.innerHTML = `<img class="image" src="${gifURL}">`
+        newGifCard.append(newGifCardImage)
         newGif.append(newGifCard)
         gifArea.append(newGif)
         console.log(newGif)
